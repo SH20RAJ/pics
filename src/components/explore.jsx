@@ -2,8 +2,12 @@
 
 import Link from "next/link"
 import Testomonials from "./explore/testomonials";
+import { auth } from "@/auth";
 
-export function Explore() {
+export async function Explore() {
+  const session = await auth()
+  const user = session?.user
+
   return (
     (<div className="flex flex-col min-h-[100dvh]">
       <header className="px-4 lg:px-6 h-14 flex items-center">
@@ -36,6 +40,23 @@ export function Explore() {
             prefetch={false}>
             Contact
           </Link>
+          {
+            user ? (
+              <Link
+                href="/dashboard"
+                className="text-sm font-medium hover:underline underline-offset-4"
+                prefetch={false}>
+                Dashboard
+              </Link>
+            ) : (
+              <Link
+                href="/join"
+                className="text-sm font-medium hover:underline underline-offset-4"
+                prefetch={false}>
+                Sign Up
+              </Link>
+            )
+          }
         </nav>
       </header>
       <main className="flex-1">
@@ -55,18 +76,33 @@ export function Explore() {
                   </p>
                 </div>
                 <div className="flex flex-col gap-2 min-[400px]:flex-row">
-                  <Link
-                    href="/join"
-                    className="inline-flex h-10 items-center justify-center rounded-md bg-primary px-8 text-sm font-medium text-primary-foreground shadow transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
-                    prefetch={true}>
-                    Sign Up
-                  </Link>
-                  <Link
+                  {
+                    user ? (
+                      <Link
+                        href="/dashboard"
+                        className="inline-flex h-10 items-center justify-center rounded-md bg-primary px-8 text-sm font-medium text-primary-foreground shadow transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
+                        prefetch={true}>
+                        Dashboard
+                      </Link>
+                    ) : (
+                      <>
+                      <Link
+                        href="/join"
+                        className="inline-flex h-10 items-center justify-center rounded-md bg-primary px-8 text-sm font-medium text-primary-foreground shadow transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
+                        prefetch={true}>
+                        Sign Up
+                      </Link>
+                       <Link
                     href="/join"
                     className="inline-flex h-10 items-center justify-center rounded-md border border-input bg-background px-8 text-sm font-medium shadow-sm transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
                     prefetch={true}>
                     Try for Free
                   </Link>
+                      </>
+                    )
+                  }
+                 
+                 
                 </div>
               </div>
               <img

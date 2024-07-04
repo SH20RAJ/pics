@@ -17,13 +17,16 @@ To read more about using these font, please visit the Next.js documentation:
 - App Directory: https://nextjs.org/docs/app/building-your-application/optimizing/fonts
 - Pages Directory: https://nextjs.org/docs/pages/building-your-application/optimizing/fonts
 **/
+'use client'
 import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
+import { signIn } from "next-auth/react"
+
 
 export function Join() {
   return (
-    (<div className="flex flex-col min-h-[100dvh]">
+    (<div className="flex flex-col min-h-[80dvh]">
       <main className="flex-1 flex items-center justify-center">
         <div className="max-w-[400px] w-full space-y-6">
           <div className="text-center space-y-2">
@@ -31,15 +34,15 @@ export function Join() {
             <p className="text-muted-foreground">Create your free account to get started.</p>
           </div>
           <div className="space-y-4">
-            <Button variant="outline" className="w-full">
+            <Button variant="outline" onClick={()=>signIn("github")} className="w-full">
               <GithubIcon className="mr-2 h-4 w-4" />
               Sign up with GitHub
             </Button>
-            <Button variant="outline" className="w-full">
+            <Button onClick={()=>signIn("google")} variant="outline" className="w-full">
               <ChromeIcon className="mr-2 h-4 w-4" />
               Sign up with Google
             </Button>
-            <div className="relative">
+            {/* <div className="relative">
               <div className="absolute inset-0 flex items-center">
                 <span className="w-full border-t" />
               </div>
@@ -59,7 +62,7 @@ export function Join() {
               <Label htmlFor="password">Password</Label>
               <Input id="password" type="password" placeholder="Enter your password" />
             </div>
-            <Button className="w-full">Sign Up</Button>
+            <Button onClick={()=>signIn()}className="w-full">Sign Up</Button> */}
           </div>
         </div>
       </main>
