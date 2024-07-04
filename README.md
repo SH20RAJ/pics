@@ -1,77 +1,80 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`c3`](https://developers.cloudflare.com/pages/get-started/c3).
+# Pics Shade
+
+Welcome to Pics Shade, the ultimate image hosting solution for your website! With Pics Shade, you can easily upload, manage, and deliver images with high performance and reliability.
+
+## Features
+
+- **Freemium Model**: Host up to 10,000 images for free. For additional storage, it's just $10 per 10,000 images.
+- **API Key Access**: Securely upload and manage your images using API keys.
+- **CDN Delivery**: Fast and efficient image delivery using a Content Delivery Network (CDN).
+- **Tag Management**: Easily organize and manage your images using tags.
+- **S3 Storage**: Robust and scalable image storage using Amazon S3.
+- **Cloudinary CDN**: Leverage Cloudinary for enhanced CDN services.
+- **Free Image Resizing**: Automatically resize images to meet your needs without extra cost.
+- **More Features**: Continuously adding more features to enhance your image hosting experience.
 
 ## Getting Started
 
-First, run the development server:
+### 1. Sign Up
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+Create an account on [Pics Shade](https://pics.shade.cool/) and get started with your free tier.
+
+### 2. Obtain API Key
+
+After signing up, navigate to your account dashboard to generate your API key. This key will be used to authenticate your requests.
+
+### 3. Upload Images
+
+Use the API to upload your images. Here’s a quick example using `curl`:
+
+```sh
+curl -X POST https://api.pics.shade.cool/upload \
+     -H "Authorization: Bearer YOUR_API_KEY" \
+     -F "image=@/path/to/your/image.jpg" \
+     -F "tags=example,tag"
 ```
 
-https://pics.shade.cool/
+### 4. Manage Images
 
+Organize and manage your images by assigning tags during the upload process or via the management dashboard.
 
+### 5. Deliver Images
 
-https://pics-d8b.pages.dev/
+Access your images via the CDN. Simply use the provided URL:
 
+```
+https://cdn.pics.shade.cool/your-image-id
+```
 
+### 6. Resize Images
 
+Resize your images on the fly by adding parameters to the URL:
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+```
+https://cdn.pics.shade.cool/your-image-id?width=300&height=200
+```
 
-## Cloudflare integration
+## Pricing
 
-Besides the `dev` script mentioned above `c3` has added a few extra scripts that allow you to integrate the application with the [Cloudflare Pages](https://pages.cloudflare.com/) environment, these are:
-  - `pages:build` to build the application for Pages using the [`@cloudflare/next-on-pages`](https://github.com/cloudflare/next-on-pages) CLI
-  - `preview` to locally preview your Pages application using the [Wrangler](https://developers.cloudflare.com/workers/wrangler/) CLI
-  - `deploy` to deploy your Pages application using the [Wrangler](https://developers.cloudflare.com/workers/wrangler/) CLI
+- **Free**: Up to 10,000 images.
+- **Premium**: $10 for every additional 10,000 images.
 
-> __Note:__ while the `dev` script is optimal for local development you should preview your Pages application as well (periodically or before deployments) in order to make sure that it can properly work in the Pages environment (for more details see the [`@cloudflare/next-on-pages` recommended workflow](https://github.com/cloudflare/next-on-pages/blob/05b6256/internal-packages/next-dev/README.md#recommended-workflow))
+## Documentation
 
-### Bindings
+For detailed API documentation and more advanced usage, visit our [Docs](https://pics.shade.cool/docs).
 
-Cloudflare [Bindings](https://developers.cloudflare.com/pages/functions/bindings/) are what allows you to interact with resources available in the Cloudflare Platform.
+## Support
 
-You can use bindings during development, when previewing locally your application and of course in the deployed application:
+If you need any help, feel free to contact our support team at [support@shade.cool](mailto:support@shade.cool).
 
-- To use bindings in dev mode you need to define them in the `next.config.js` file under `setupDevBindings`, this mode uses the `next-dev` `@cloudflare/next-on-pages` submodule. For more details see its [documentation](https://github.com/cloudflare/next-on-pages/blob/05b6256/internal-packages/next-dev/README.md).
+## Contributing
 
-- To use bindings in the preview mode you need to add them to the `pages:preview` script accordingly to the `wrangler pages dev` command. For more details see its [documentation](https://developers.cloudflare.com/workers/wrangler/commands/#dev-1) or the [Pages Bindings documentation](https://developers.cloudflare.com/pages/functions/bindings/).
+We welcome contributions! Please see our [CONTRIBUTING.md](CONTRIBUTING.md) for more details.
 
-- To use bindings in the deployed application you will need to configure them in the Cloudflare [dashboard](https://dash.cloudflare.com/). For more details see the  [Pages Bindings documentation](https://developers.cloudflare.com/pages/functions/bindings/).
+## License
 
-#### KV Example
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-`c3` has added for you an example showing how you can use a KV binding.
+---
 
-In order to enable the example:
-- Search for javascript/typescript lines containing the following comment:
-  ```ts
-  // KV Example:
-  ```
-  and uncomment the commented lines below it.
-- Do the same in the `wrangler.toml` file, where
-  the comment is:
-  ```
-  # KV Example:
-  ```
-- If you're using TypeScript run the `cf-typegen` script to update the `env.d.ts` file:
-  ```bash
-  npm run cf-typegen
-  # or
-  yarn cf-typegen
-  # or
-  pnpm cf-typegen
-  # or
-  bun cf-typegen
-  ```
-
-After doing this you can run the `dev` or `preview` script and visit the `/api/hello` route to see the example in action.
-
-Finally, if you also want to see the example work in the deployed application make sure to add a `MY_KV_NAMESPACE` binding to your Pages application in its [dashboard kv bindings settings section](https://dash.cloudflare.com/?to=/:account/pages/view/:pages-project/settings/functions#kv_namespace_bindings_section). After having configured it make sure to re-deploy your application.
+Thank you for choosing Pics Shade for your image hosting needs!
