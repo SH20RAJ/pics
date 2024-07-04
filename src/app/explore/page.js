@@ -1,10 +1,10 @@
-import { ApiPage } from '@/components/api-page'
+import { Explore } from '@/components/explore'
 import React from 'react'
 
 export default function page() {
   return (
     <div>
-      <ApiPage  />
+      <Explore/>
     </div>
   )
 }
