@@ -2,6 +2,7 @@ import NextAuth from "next-auth";
 import Google from "next-auth/providers/google";
 import Github from "next-auth/providers/github";
 import prisma from "./prisma";
+import { getUserFromEmail } from "./app/api/publish/getUserFromEmail";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [ Github, Google],
@@ -40,11 +41,11 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           name: profile.name,
           username,
           password,
-          image: profile.picture,
+          image: profile.avatar_url || profile.picture,
         },
         update: {
           // name: profile.name,
-          image: profile.picture,
+          image: profile.avatar_url || profile.picture,
         },
       });
 
@@ -55,17 +56,19 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       return "/";
     },
     async session({session, token}) {
-      // session.userId = token.id;
-      // session.username = token.username
+      session.user.userId = token.id;
+      session.user.username = token.username
       return session;
     },
     async jwt({ token, user }) {
     // console.log("Ddsvdvs",/*  */token,user);
       if (user) {
-        // let cs = await getUserFromEmail(token.email);
-        // token.id = user.id;
-        // token.username = cs.username
-        // token.id = cs.id
+        console.log("some user",user);
+        let cs = await getUserFromEmail(token.email);
+        console.log("cs",cs);
+        token.id = user.id;
+        token.username = cs.username
+        token.id = cs.id
       }
       // console.log("user", user);
       return token;

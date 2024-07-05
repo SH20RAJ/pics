@@ -17,4 +17,4 @@ export default function RootLayout({ children }) {
 }
 
 
-export const runtime = 'experimental-edge'
+// export const runtime = 'experimental-edge'

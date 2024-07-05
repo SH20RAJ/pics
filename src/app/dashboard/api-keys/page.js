@@ -1,4 +1,4 @@
-import { ApiPage } from '@/components/api-page'
+import { ApiPage } from './api-page'
 import React from 'react'
 
 export default function page() {
