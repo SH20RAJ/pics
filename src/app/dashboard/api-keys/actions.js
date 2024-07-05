@@ -51,3 +51,23 @@ export const getAPIKeys = async () => {
         throw error; // Handle or propagate the error as needed
     }
 }
+
+
+export const deleteAPIKey = async (id) => {
+
+    const session = await auth(); // Assuming auth() function is correctly implemented
+
+    try {
+        const apikeys = await prisma.apiKey.deleteMany({
+            where: {
+                id,
+                userId: session.user.userId,
+            },
+        });
+
+        return apikeys;
+    } catch (error) {
+        console.error("Error deleting API keys:", error);
+        throw error; // Handle or propagate the error as needed
+    }
+}

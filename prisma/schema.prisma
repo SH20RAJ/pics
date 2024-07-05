@@ -31,7 +31,7 @@ model ApiKey {
   id          Int      @id @default(autoincrement())
   key         String   @unique @default(uuid())
   name        String
-  description String
+  description String?
   userId      String
   user        User     @relation(fields: [userId], references: [id])
   createdAt   DateTime @default(now())

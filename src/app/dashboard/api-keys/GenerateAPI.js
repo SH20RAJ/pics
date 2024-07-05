@@ -8,13 +8,14 @@ import {Button} from '@/components/ui/button'
 import { useState } from "react"
 import { generateAPIKey } from "./actions"
 
-export function GenerateAPI() {
+export function GenerateAPI({change}) {
     const [keyName, setKeyName] = useState('')
     const [description, setDescription] = useState('')
 
     const handleSubmit = async (e) => {
       const apiKey = await generateAPIKey(keyName, description)
       console.log(apiKey)
+      change(true)
     }
   return (
     <>
@@ -42,3 +43,5 @@ export function GenerateAPI() {
     </>
   )
 }
+
+
