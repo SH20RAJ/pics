@@ -1,16 +1,14 @@
 import NextAuth from "next-auth";
-import GitHub from "next-auth/providers/github";
 import Google from "next-auth/providers/google";
-import { PrismaAdapter } from "@auth/prisma-adapter";
-import { PrismaClient } from "@prisma/client";
-import getUserFromEmail from "./app/api/publish/getUserFromEmail";
-const prisma = new PrismaClient();
+import Github from "next-auth/providers/github";
+import prisma from "./prisma";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
-  // adapter: PrismaAdapter(prisma),
-  providers: [GitHub, Google],
+  providers: [ Github, Google],
   callbacks: {
     async signIn({ account, profile }) {
+      console.log("account", account);
+      console.log("profile", profile);
       if (!profile?.email) {
         throw new Error("No profile");
       }
@@ -49,26 +47,25 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           image: profile.picture,
         },
       });
+
       // console.log("session",session);
       return true;
     },
     async redirect() {
       return "/";
     },
-    async session(props) {
-      // console.log("props", props);
-      const { session, token } = props;
-      session.userId = token.id;
-      session.username = token.username
+    async session({session, token}) {
+      // session.userId = token.id;
+      // session.username = token.username
       return session;
     },
     async jwt({ token, user }) {
-      // console.log("Ddsvdvs",token,user);
+    // console.log("Ddsvdvs",/*  */token,user);
       if (user) {
-        let cs = await getUserFromEmail(token.email);
-        token.id = user.id;
-        token.username = cs.username
-        token.id = cs.id
+        // let cs = await getUserFromEmail(token.email);
+        // token.id = user.id;
+        // token.username = cs.username
+        // token.id = cs.id
       }
       // console.log("user", user);
       return token;

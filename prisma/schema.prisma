@@ -11,6 +11,8 @@ model User {
   id             String           @id @default(cuid())
   name           String?
   email          String           @unique
+  username       String           @unique @default(cuid())
+  password       String?
   image          String?
   apiKeys        ApiKey[]
   images         Image[]

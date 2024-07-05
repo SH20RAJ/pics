@@ -49,12 +49,14 @@ export async function Explore() {
                 Dashboard
               </Link>
             ) : (
+              <>
               <Link
                 href="/join"
                 className="text-sm font-medium hover:underline underline-offset-4"
                 prefetch={false}>
-                Sign Up
+                Join
               </Link>
+                  </>
             )
           }
         </nav>
@@ -90,7 +92,7 @@ export async function Explore() {
                         href="/join"
                         className="inline-flex h-10 items-center justify-center rounded-md bg-primary px-8 text-sm font-medium text-primary-foreground shadow transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
                         prefetch={true}>
-                        Sign Up
+                       Join
                       </Link>
                        <Link
                     href="/join"
