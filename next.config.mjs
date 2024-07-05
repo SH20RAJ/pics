@@ -9,6 +9,14 @@ if (process.env.NODE_ENV === 'development') {
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  images: {
+    domains: ['cdn.jsdelivr.net', 'lh3.googleusercontent.com'],
+    remotePatterns: [{
+      protocol: "https",
+      hostname: "**",
+    },
+  ],
+  },
   
 };
 
