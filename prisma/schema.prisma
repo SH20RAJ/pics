@@ -8,21 +8,92 @@ datasource db {
 }
 
 model User {
-  id            String          @id @default(cuid())
-  name          String?
-  email         String          @unique
-  emailVerified DateTime?
-  image         String?
-  accounts      Account[]
-  sessions      Session[]
+  id             String           @id @default(cuid())
+  name           String?
+  email          String           @unique
+  image          String?
+  apiKeys        ApiKey[]
+  images         Image[]
+  qouta          Int              @default(10000)
+  emailVerified  DateTime?
+  accounts       Account[]
+  userQuota      UserImageQuota[]
+  sessions       Session[]
   authenticators Authenticator[]
-  userImageQuota UserImageQuota[]
-  apiKeys       ApiKey[]
-  images        Image[]
-  folders       Folder[]
-  createdAt     DateTime        @default(now())
-  updatedAt     DateTime        @updatedAt
+  folders        Folder[]
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
 }
+
+
+model ApiKey {
+  id        Int      @id @default(autoincrement())
+  key       String   @unique @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Image {
+  id        Int        @id @default(autoincrement())
+  url       String
+  path      String
+  userId    String
+  user      User       @relation(fields: [userId], references: [id])
+  folderId  Int?
+  folder    Folder?    @relation(fields: [folderId], references: [id])
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  tags      ImageTag[]
+}
+
+model Tag {
+  id        Int        @id @default(autoincrement())
+  name      String     @unique
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  images    ImageTag[]
+}
+
+model ImageTag {
+  id        Int      @id @default(autoincrement())
+  imageId   Int
+  tagId     Int
+  image     Image    @relation(fields: [imageId], references: [id], onDelete: Cascade)
+  tag       Tag      @relation(fields: [tagId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([imageId, tagId])
+}
+
+model Folder {
+  id        Int      @id @default(autoincrement())
+  name      String
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  parentId  Int?
+  parent    Folder?  @relation("SubFolders", fields: [parentId], references: [id])
+  children  Folder[] @relation("SubFolders")
+  images    Image[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([parentId])
+}
+
+model UserImageQuota {
+  id         Int      @id @default(autoincrement())
+  userId     String
+  user       User     @relation(fields: [userId], references: [id])
+  imageCount Int      @default(0)
+  quota      Int      @default(10000) // Default free quota is 10,000 images
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+
 
 model Account {
   userId            String
@@ -36,9 +107,10 @@ model Account {
   scope             String?
   id_token          String?
   session_state     String?
-  createdAt         DateTime     @default(now())
-  updatedAt         DateTime     @updatedAt
-  user              User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
   @@id([provider, providerAccountId])
 }
 
@@ -55,6 +127,7 @@ model VerificationToken {
   identifier String
   token      String
   expires    DateTime
+
   @@id([identifier, token])
 }
 
@@ -68,70 +141,6 @@ model Authenticator {
   credentialBackedUp   Boolean
   transports           String?
   user                 User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
   @@id([userId, credentialID])
-}
-
-model ApiKey {
-  id        Int      @id @default(autoincrement())
-  key       String   @unique @default(uuid())
-  userId    String
-  user      User     @relation(fields: [userId], references: [id])
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
-model Image {
-  id        Int      @id @default(autoincrement())
-  url       String
-  path      String
-  userId    String
-  user      User     @relation(fields: [userId], references: [id])
-  folderId  Int?
-  folder    Folder?  @relation(fields: [folderId], references: [id])
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  tags      ImageTag[]
-}
-
-model Tag {
-  id        Int      @id @default(autoincrement())
-  name      String   @unique
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  images    ImageTag[]
-}
-
-model ImageTag {
-  id        Int      @id @default(autoincrement())
-  imageId   Int
-  tagId     Int
-  image     Image    @relation(fields: [imageId], references: [id], onDelete: Cascade)
-  tag       Tag      @relation(fields: [tagId], references: [id], onDelete: Cascade)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  @@unique([imageId, tagId])
-}
-
-model Folder {
-  id        Int       @id @default(autoincrement())
-  name      String
-  userId    String
-  user      User      @relation(fields: [userId], references: [id])
-  parentId  Int?
-  parent    Folder?   @relation("SubFolders", fields: [parentId], references: [id])
-  children  Folder[]  @relation("SubFolders")
-  images    Image[]
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  @@index([parentId])
-}
-
-model UserImageQuota {
-  id           Int      @id @default(autoincrement())
-  userId       String
-  user         User     @relation(fields: [userId], references: [id])
-  imageCount   Int      @default(0)
-  quota        Int      @default(10000) // Default free quota is 10,000 images
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
 }
