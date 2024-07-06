@@ -16,9 +16,8 @@ import { ToastAction } from "@/components/ui/toast";
 import { useToast } from "@/components/ui/use-toast";
 import { parseDate } from "@/lib/funcs";
 
-
 export function ApiPage() {
-  const { toast } = useToast()
+  const { toast } = useToast();
 
   const [apis, setAPIs] = useState([]);
   const [change, setChange] = useState(false);
@@ -28,12 +27,11 @@ export function ApiPage() {
       setAPIs(data);
       console.log(data, apis);
     });
-    
-  }, [change,apis]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [change]);
 
   return (
     <div className="flex flex-col h-full">
-
       <main className="flex-1 p-6 space-y-8">
         <GenerateAPI change={setChange} />
         <section>
@@ -121,8 +119,7 @@ export const APIRow = ({ api, setChange, toast }) => {
   );
 };
 
-
-export const copyToClipboard = (text,toast) => {
+export const copyToClipboard = (text, toast) => {
   navigator.clipboard.writeText(text)
     .then(() => {
       toast({
