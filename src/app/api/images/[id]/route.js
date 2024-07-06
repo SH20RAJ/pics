@@ -25,7 +25,7 @@ export async function GET(req, { params }) {
   try {
     const image = await prisma.image.findUnique({
       where: {
-        id: parseInt(id, 10),
+        uniqueId: id,
       },
     });
 

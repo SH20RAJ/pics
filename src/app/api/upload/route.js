@@ -14,16 +14,19 @@ export const POST = async (req) => {
     let tags = formData.get("tags") ? formData.get("tags").split(",") : [];
 
     // Upload the file to Discord
+    const filename = file.name;
     const imageUrl = convertToCloudinaryUrl(await uploadFileToDiscord(file, `Uploaded with tags: ${tags.join(", ")}`));
 
     console.log(imageUrl, path, tags);
     tags = tags.join(",");
-
     // Create response data
-    let data = await prisma.image.create({
+    const data = await prisma.image.create({
       data: {
         url: imageUrl,
         path: path,
+        filename: filename,
+        tagdata: tags,
+        uniqueId: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15),
         user: {
           connect: {
             id: session.user.userId,
@@ -35,6 +38,7 @@ export const POST = async (req) => {
     // Return the response
     return NextResponse.json(data);
   } catch (error) {
+    console.error(error);
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 };

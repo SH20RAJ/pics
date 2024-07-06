@@ -40,7 +40,7 @@ model ApiKey {
 
 model Image {
   id        Int        @id @default(autoincrement())
-  idHash    String     @unique @default(cuid())
+  uniqueId  String?    @unique @default(cuid())
   filename  String?
   url       String
   path      String
@@ -63,11 +63,11 @@ model Tag {
 }
 
 model ImageTag {
-  id        Int      @id @default(autoincrement())
-  imageId   Int
-  tagId     Int
-  image     Image    @relation(fields: [imageId], references: [id], onDelete: Cascade)
-  tag       Tag      @relation(fields: [tagId], references: [id], onDelete: Cascade)
+  id      Int   @id @default(autoincrement())
+  imageId Int
+  tagId   Int
+  image   Image @relation(fields: [imageId], references: [id], onDelete: Cascade)
+  tag     Tag   @relation(fields: [tagId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

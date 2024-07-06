@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "Image" ALTER COLUMN "idHash" DROP NOT NULL;

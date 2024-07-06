@@ -48,3 +48,10 @@ export async function uploadFileToDiscord(
     throw new Error("Error uploading image to Discord.");
   }
 }
+
+
+
+export const parseDate = (date) => {  
+  const d = new Date(date)
+  return d.toLocaleString()
+}
