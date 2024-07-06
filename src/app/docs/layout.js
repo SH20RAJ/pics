@@ -8,7 +8,7 @@ export default function DocsLayout({ children}) {
     redirect('https://docs.pics.shade.cool/')
     return (
         <>
-            <div className="flex min-h-screen w-full">
+            {/* <div className="flex min-h-screen w-full">
                 <aside className="hidden w-64 shrink-0 border-r bg-background md:block">
                     <div className="sticky top-0 flex h-16 items-center border-b px-6">
                         <Link href="#" className="font-bold" prefetch={false}>
@@ -61,7 +61,7 @@ export default function DocsLayout({ children}) {
                     }
                 </main>
 
-            </div>
+            </div> */}
 
         </>
     )
