@@ -3,6 +3,7 @@
     "next/core-web-vitals",
     "plugin:eslint-plugin-next-on-pages/recommended"
   ],
+  "rules": { "react/no-unescaped-entities": 0 },
   "plugins": [
     "eslint-plugin-next-on-pages"
   ]
