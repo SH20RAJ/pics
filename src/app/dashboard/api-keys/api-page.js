@@ -28,7 +28,8 @@ export function ApiPage() {
       setAPIs(data);
       console.log(data, apis);
     });
-  }, [change]);
+    
+  }, [change,apis]);
 
   return (
     <div className="flex flex-col h-full">
