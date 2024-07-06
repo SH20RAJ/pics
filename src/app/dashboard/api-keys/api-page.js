@@ -12,9 +12,14 @@ import { GenerateAPI } from "./GenerateAPI";
 import { getAPIKeys, deleteAPIKey } from "./actions";
 import { useEffect, useState } from "react";
 import { CopyIcon, KeyIcon, TrashIcon } from "lucide-react";
-import { toast } from "sonner";
+import { ToastAction } from "@/components/ui/toast";
+import { useToast } from "@/components/ui/use-toast";
+import { parseDate } from "@/lib/funcs";
+
 
 export function ApiPage() {
+  const { toast } = useToast()
+
   const [apis, setAPIs] = useState([]);
   const [change, setChange] = useState(false);
 
@@ -27,6 +32,7 @@ export function ApiPage() {
 
   return (
     <div className="flex flex-col h-full">
+
       <main className="flex-1 p-6 space-y-8">
         <GenerateAPI change={setChange} />
         <section>
@@ -43,7 +49,7 @@ export function ApiPage() {
               </TableHeader>
               <TableBody>
                 {apis.map((api) => (
-                  <APIRow key={api.id} api={api} setChange={setChange} />
+                  <APIRow key={api.id} api={api} setChange={setChange} toast={toast} />
                 ))}
               </TableBody>
             </Table>
@@ -54,8 +60,33 @@ export function ApiPage() {
   );
 }
 
-export const APIRow = ({ api, setChange }) => {
+export const APIRow = ({ api, setChange, toast }) => {
   const { name, createdAt, key, id } = api;
+
+  const handleDelete = () => {
+    deleteAPIKey(id)
+      .then(() => {
+        setChange((prev) => !prev); // Trigger a re-fetch or state change
+        toast({
+          title: "Deleted",
+          description: "API Key successfully deleted",
+          action: (
+            <ToastAction altText="Close">Close</ToastAction>
+          ),
+        });
+      })
+      .catch((err) => {
+        console.error(err);
+        toast({
+          title: "Error",
+          description: "Failed to delete API Key",
+          action: (
+            <ToastAction altText="Close">Close</ToastAction>
+          ),
+        });
+      });
+  };
+
   return (
     <TableRow>
       <TableCell>
@@ -64,13 +95,13 @@ export const APIRow = ({ api, setChange }) => {
           <span>{name}</span>
         </div>
       </TableCell>
-      <TableCell>{JSON.stringify(createdAt)}</TableCell>
+      <TableCell>{parseDate(createdAt)}</TableCell>
       <TableCell>
         <span>{key.substring(0, 4)}....</span>
       </TableCell>
       <TableCell>
         <div className="flex items-center gap-2">
-          <Button variant="ghost" size="icon" onClick={() => copyToClipboard(key)}>
+          <Button variant="ghost" size="icon" onClick={() => copyToClipboard(key, toast)}>
             <CopyIcon className="w-5 h-5" />
             <span className="sr-only">Copy API Key</span>
           </Button>
@@ -78,9 +109,7 @@ export const APIRow = ({ api, setChange }) => {
             variant="ghost"
             size="icon"
             className="text-red-500 hover:bg-red-500/10"
-            onClick={() => {
-              deleteAPIKey(id).then(() => setChange((prev) => !prev));
-            }}
+            onClick={handleDelete}
           >
             <TrashIcon className="w-5 h-5" />
             <span className="sr-only">Delete API Key</span>
@@ -91,8 +120,26 @@ export const APIRow = ({ api, setChange }) => {
   );
 };
 
-export const copyToClipboard = (text) => {
+
+export const copyToClipboard = (text,toast) => {
   navigator.clipboard.writeText(text)
-    .then(() => toast('copied'))
-    .catch((err) => console.error(err));
+    .then(() => {
+      toast({
+        title: "Copied",
+        description: "API Key copied to clipboard",
+        action: (
+          <ToastAction altText="Close">Close</ToastAction>
+        ),
+      });
+    })
+    .catch((err) => {
+      console.error(err);
+      toast({
+        title: "Error",
+        description: "Failed to copy API Key",
+        action: (
+          <ToastAction altText="Close">Close</ToastAction>
+        ),
+      });
+    });
 };

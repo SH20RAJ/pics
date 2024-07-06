@@ -7,6 +7,7 @@ import prisma from '@/prisma'
 
 
 export const generateAPIKey = async (keyName, description) => {
+    if(!keyName) throw new Error('Key name is required')
     console.log(keyName, description); // Uncomment for debugging
     // Ensure keyName is correct and not accidentally set to "name" or undefined
     

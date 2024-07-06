@@ -72,9 +72,9 @@ export function ImageTable() {
           </TableRow>
         ))}
       </TableBody>
-      <TableFooter>
-        <TableRow>
-          <TableCell colSpan={3}>Total Images</TableCell>
+      <TableFooter className=" ">
+        <TableRow  className="">
+          <TableCell colSpan={5}>Total Images</TableCell>
           <TableCell className="text-right">{images.length}</TableCell>
         </TableRow>
       </TableFooter>
