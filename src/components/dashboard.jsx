@@ -36,7 +36,7 @@ const [currentIndex, setCurrentIndex] = useState(0)
     { name: "Dashboard", icon: <LayoutDashboardIcon/> , slug : "/dashboard" },
     { name: "API Keys", icon: <KeyIcon/> , slug : "/dashboard/api-keys" },
     { name: "Analytics", icon: <InfoIcon/> , slug : "/dashboard/analytics" },
-    { name: "Packages", icon: <PackageIcon/> , slug : "/dashboard/packages" },
+    // { name: "Packages", icon: <PackageIcon/> , slug : "/dashboard/packages" },
     { name: "Images", icon: <ImageIcon/> , slug : "/dashboard/images" },
   ];
   return (

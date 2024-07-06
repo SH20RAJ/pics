@@ -49,9 +49,39 @@ export async function uploadFileToDiscord(
   }
 }
 
+export const parseDate = (date) => {
+  const d = new Date(date);
+  return d.toLocaleString();
+};
 
+export const viewParser = (view) => {
+  // 1k 1m 1b etc
+  if (view < 1000) {
+    return view + "";
+  }
+  if (view < 1000000) {
+    return (view / 1000).toFixed(1) + "k";
+  }
+  if (view < 1000000000) {
+    return (view / 1000000).toFixed(1) + "m";
+  }
+  if (view >= 1000000000) {
+    return (view / 1000000000).toFixed(1) + "b";
+  }
+  if (view === 0) {
+    return "No ";
+  }
+  return view;
+};
 
-export const parseDate = (date) => {  
-  const d = new Date(date)
-  return d.toLocaleString()
+export const truncate = (str, n) => {
+  return str.length > n ? str.substr(0, n - 1) + "..." : str;
+};
+
+export const convertToImageCDN = ({url , height, width, format, fit }) => {
+  const baseurl = 'https://imagecdn.app/v1/images/';
+  if(!url) return;
+  if(!height && !width && !format && !fit) return baseurl + encodeURIComponent(url);
+  let cdnurl = baseurl + encodeURIComponent(url) + '?height=' + height + '&width=' + width + '&format=' + format + '&fit=' + fit;
+  return cdnurl;
 }

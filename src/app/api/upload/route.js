@@ -1,27 +1,33 @@
-import { convertToCloudinaryUrl, uploadFileToDiscord } from "@/lib/funcs";
+import { convertToCloudinaryUrl, convertToImageCDN, uploadFileToDiscord } from "@/lib/funcs";
 import prisma from "@/prisma";
 import { NextResponse } from "next/server";
 
 // POST handler for the upload route
 export const POST = async (req) => {
-  const url = new URL(req.url)
+  const url = new URL(req.url);
 
   try {
     // Parse the request body
     const formData = await req.formData();
     const file = formData.get("file");
+    if (!file) {
+      return NextResponse.json({ error: "File not provided" }, { status: 400 });
+    }
+
     let path = formData.get("path") || "./";
     let tags = formData.get("tags") ? formData.get("tags").split(",") : [];
 
-    const host = req.headers.get('host');
-    const protocol = req.headers.get('x-forwarded-proto') || 'http';
-    const currentUrl = `${protocol}://${host}`;
-
-
-
-    // get the barear token api key and from the api key get the user id
+    // Extract the bearer token
     const token = req.headers.get("Authorization");
+    if (!token) {
+      return NextResponse.json({ error: "Authorization header missing" }, { status: 401 });
+    }
+
     const apiKey = token.split(" ")[1];
+    if (!apiKey) {
+      return NextResponse.json({ error: "Bearer token malformed" }, { status: 401 });
+    }
+
     const api = await prisma.apiKey.findUnique({
       where: {
         key: apiKey,
@@ -49,7 +55,6 @@ export const POST = async (req) => {
       },
       select: {
         quota: true,
-        // select images count only
         _count: {
           select: {
             images: true,
@@ -58,31 +63,26 @@ export const POST = async (req) => {
       },
     });
 
-    // if the user quota is exceeded return an error
-    if (user.quota < user._count.images) {
-      return NextResponse.json({ error: "User quota exceeded" }, { status: 401 });
-    }
-
-
-    // if the user is not found return an error
     if (!user) {
       return NextResponse.json({ error: "User not found" }, { status: 401 });
     }
 
+    // if the user quota is exceeded return an error
+    if (user.quota <= user._count.images) {
+      return NextResponse.json({ error: "User quota exceeded" }, { status: 401 });
+    }
 
     // Upload the file to Discord
     const filename = file.name;
     const imageUrl = convertToCloudinaryUrl(await uploadFileToDiscord(file, `Uploaded with tags: ${tags.join(", ")}`));
 
-    console.log(imageUrl, path, tags);
-    tags = tags.join(",");
     // Create response data
     let data = await prisma.image.create({
       data: {
         url: imageUrl,
         path: path,
         filename: filename,
-        tagdata: tags,
+        tagdata: tags.join(","),
         uniqueId: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15),
         user: {
           connect: {
@@ -91,7 +91,8 @@ export const POST = async (req) => {
         },
       },
     });
-    data.url = `${url.origin}/api/images/${data.uniqueId}`;
+    data.url = `${"https://pics.shade.cool"}/api/images/${data.uniqueId}`;
+    data.cdn = convertToImageCDN({url:data.url});
 
     // Return the response
     return NextResponse.json(data);

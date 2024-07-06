@@ -61,69 +61,8 @@ export function DashBoardMain() {
             </CardContent>
           </Card>
         </div>
-        <div className="grid gap-8 mt-8">
-          <Card>
-            <CardHeader>
-              <CardTitle>Recent Projects</CardTitle>
-              <CardDescription>A list of your most recent projects.</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="grid gap-4">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <img
-                      src="/placeholder.svg"
-                      width={40}
-                      height={40}
-                      alt="Project thumbnail"
-                      className="rounded-md" />
-                    <div>
-                      <div className="font-medium">Acme Website</div>
-                      <div className="text-sm text-muted-foreground">Last updated 2 days ago</div>
-                    </div>
-                  </div>
-                  <Button variant="outline" size="sm">
-                    View
-                  </Button>
-                </div>
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <img
-                      src="/placeholder.svg"
-                      width={40}
-                      height={40}
-                      alt="Project thumbnail"
-                      className="rounded-md" />
-                    <div>
-                      <div className="font-medium">Ecommerce App</div>
-                      <div className="text-sm text-muted-foreground">Last updated 5 days ago</div>
-                    </div>
-                  </div>
-                  <Button variant="outline" size="sm">
-                    View
-                  </Button>
-                </div>
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <img
-                      src="/placeholder.svg"
-                      width={40}
-                      height={40}
-                      alt="Project thumbnail"
-                      className="rounded-md" />
-                    <div>
-                      <div className="font-medium">Blog Platform</div>
-                      <div className="text-sm text-muted-foreground">Last updated 1 week ago</div>
-                    </div>
-                  </div>
-                  <Button variant="outline" size="sm">
-                    View
-                  </Button>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
+
+        
       </main>
     </div>)
   );

@@ -12,7 +12,7 @@ import {
 import { DeleteIcon, EyeIcon } from "lucide-react";
 import { getImages } from "./actions";
 import { useEffect, useState } from "react";
-import { parseDate } from "@/lib/funcs";
+import { convertToImageCDN, parseDate } from "@/lib/funcs";
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
@@ -52,9 +52,9 @@ export function ImageTable() {
           <TableRow key={image.id}>
             <TableCell className="flex gap-2">
               {" "}
-              <Image
-                alt={image.filename}
-                src={"/api/images/" + image.uniqueId}
+              <img
+                alt={(image.filename)}
+                src={convertToImageCDN({url:"https://pics.shade.cool"+"/api/images/" + image.uniqueId+""})+"?height=20&width=20"}
                 width={23}
                 height={20}
                 />{" "}
