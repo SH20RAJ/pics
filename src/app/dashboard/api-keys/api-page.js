@@ -9,30 +9,26 @@ import {
   TableCell,
 } from "@/components/ui/table";
 import { GenerateAPI } from "./GenerateAPI";
-import { getAPIKeys , deleteAPIKey} from "./actions";
+import { getAPIKeys, deleteAPIKey } from "./actions";
 import { useEffect, useState } from "react";
 import { CopyIcon, KeyIcon, TrashIcon } from "lucide-react";
-export function ApiPage() {
+import { toast } from "sonner";
 
+export function ApiPage() {
   const [apis, setAPIs] = useState([]);
   const [change, setChange] = useState(false);
+
   useEffect(() => {
     getAPIKeys().then((data) => {
       setAPIs(data);
       console.log(data, apis);
     });
-  }, [change,apis]);
+  }, [change]);
 
   return (
     <div className="flex flex-col h-full">
-      {/* <header className="bg-primary text-primary-foreground py-4 px-6 rounded-2xl">
-        <h1 className="text-2xl font-bold">API Keys</h1>
-      </header> */}
       <main className="flex-1 p-6 space-y-8">
         <GenerateAPI change={setChange} />
-        {/* {
-          JSON.stringify(apis)
-        } */}
         <section>
           <h2 className="text-xl font-semibold">Your API Keys</h2>
           <div className="mt-4 border rounded-lg overflow-hidden">
@@ -46,9 +42,9 @@ export function ApiPage() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {
-                  apis.map((api) => <APIRow key={api.id} api={api} />)
-                }
+                {apis.map((api) => (
+                  <APIRow key={api.id} api={api} setChange={setChange} />
+                ))}
               </TableBody>
             </Table>
           </div>
@@ -58,8 +54,8 @@ export function ApiPage() {
   );
 }
 
-export const APIRow = ({api}) => {
-  const { name, createdAt , key, id} = api;
+export const APIRow = ({ api, setChange }) => {
+  const { name, createdAt, key, id } = api;
   return (
     <TableRow>
       <TableCell>
@@ -69,11 +65,12 @@ export const APIRow = ({api}) => {
         </div>
       </TableCell>
       <TableCell>{JSON.stringify(createdAt)}</TableCell>
-      <TableCell><span>{key.substring(0,4)}....</span></TableCell>
-        
+      <TableCell>
+        <span>{key.substring(0, 4)}....</span>
+      </TableCell>
       <TableCell>
         <div className="flex items-center gap-2">
-          <Button variant="ghost" size="icon" onClick={()=>copyToClipboard(key)}>
+          <Button variant="ghost" size="icon" onClick={() => copyToClipboard(key)}>
             <CopyIcon className="w-5 h-5" />
             <span className="sr-only">Copy API Key</span>
           </Button>
@@ -81,7 +78,9 @@ export const APIRow = ({api}) => {
             variant="ghost"
             size="icon"
             className="text-red-500 hover:bg-red-500/10"
-            onClick={() => deleteAPIKey(id)}
+            onClick={() => {
+              deleteAPIKey(id).then(() => setChange((prev) => !prev));
+            }}
           >
             <TrashIcon className="w-5 h-5" />
             <span className="sr-only">Delete API Key</span>
@@ -91,6 +90,9 @@ export const APIRow = ({api}) => {
     </TableRow>
   );
 };
+
 export const copyToClipboard = (text) => {
   navigator.clipboard.writeText(text)
-}
+    .then(() => toast('copied'))
+    .catch((err) => console.error(err));
+};

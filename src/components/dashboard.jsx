@@ -17,6 +17,7 @@ To read more about using these font, please visit the Next.js documentation:
 - App Directory: https://nextjs.org/docs/app/building-your-application/optimizing/fonts
 - Pages Directory: https://nextjs.org/docs/pages/building-your-application/optimizing/fonts
 **/
+'use client'
 import { TooltipProvider, Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip"
 import Link from "next/link"
 import { Sheet, SheetTrigger, SheetContent } from "@/components/ui/sheet"
@@ -24,8 +25,20 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuItem } from "@/components/ui/dropdown-menu"
 import UserAvatar from "./UserAvatar"
+import React, { useState } from "react"
+import { ImageIcon } from "lucide-react"
 
 export function DashboardLayout({ children}) {
+
+const [currentIndex, setCurrentIndex] = useState(0)
+
+  const options = [
+    { name: "Dashboard", icon: <LayoutDashboardIcon/> , slug : "/dashboard" },
+    { name: "API Keys", icon: <KeyIcon/> , slug : "/dashboard/api-keys" },
+    { name: "Analytics", icon: <InfoIcon/> , slug : "/dashboard/analytics" },
+    { name: "Packages", icon: <PackageIcon/> , slug : "/dashboard/packages" },
+    { name: "Images", icon: <ImageIcon/> , slug : "/dashboard/images" },
+  ];
   return (
     (<div className="flex min-h-screen w-full flex-col bg-muted/40">
       <aside
@@ -39,54 +52,26 @@ export function DashboardLayout({ children}) {
               <Package2Icon className="h-4 w-4 transition-all group-hover:scale-110" />
               <span className="sr-only">Pics Shade</span>
             </Link>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Link
-                  href="/dashboard"
-                  className="flex h-9 w-9 items-center justify-center rounded-lg bg-accent text-accent-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
-                  prefetch={false}>
-                  <LayoutDashboardIcon className="h-5 w-5" />
-                  <span className="sr-only">Dashboard</span>
-                </Link>
-              </TooltipTrigger>
-              <TooltipContent side="right">Dashboard</TooltipContent>
-            </Tooltip>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Link
-                  href="/dashboard/analytics"
-                  className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
-                  prefetch={false}>
-                  <InfoIcon className="h-5 w-5" />
-                  <span className="sr-only">Analytics</span>
-                </Link>
-              </TooltipTrigger>
-              <TooltipContent side="right">Analytics</TooltipContent>
-            </Tooltip>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Link
-                  href="/dashboard/packages"
-                  className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
-                  prefetch={false}>
-                  <PackageIcon className="h-5 w-5" />
-                  <span className="sr-only">Packages</span>
-                </Link>
-              </TooltipTrigger>
-              <TooltipContent side="right">Packages</TooltipContent>
-            </Tooltip>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Link
-                  href="/dashboard/api-keys"
-                  className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
-                  prefetch={false}>
-                  <KeyIcon className="h-5 w-5" />
-                  <span className="sr-only">API Keys</span>
-                </Link>
-              </TooltipTrigger>
-              <TooltipContent side="right">API Keys</TooltipContent>
-            </Tooltip>
+            {
+              options.map((option, index) => (
+                <Tooltip key={index}>
+                  <TooltipTrigger asChild>
+                    <Link
+                      href={option.slug}
+                      onClick={() => setCurrentIndex(index)}
+                      className={`flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8 ${currentIndex === index ? " bg-accent text-white " : ""}`}
+                      prefetch={false}>
+                      {option.icon}
+                      <span className="sr-only">{option.name}</span>
+                    </Link>
+                  </TooltipTrigger>
+                  <TooltipContent side="right">{option.name}</TooltipContent>
+                </Tooltip>
+              ))
+            }
+
+
+
           </TooltipProvider>
         </nav>
         <nav className="mt-auto flex flex-col items-center gap-4 px-2 sm:py-5">
@@ -130,41 +115,18 @@ export function DashboardLayout({ children}) {
             </SheetTrigger>
             <SheetContent side="left" className="sm:max-w-xs">
               <nav className="grid gap-6 text-lg font-medium">
-                <Link
-                  href="#"
-                  className="group flex h-10 w-10 shrink-0 items-center justify-center gap-2 rounded-full bg-primary text-lg font-semibold text-primary-foreground md:text-base"
-                  prefetch={false}>
-                  <Package2Icon className="h-5 w-5 transition-all group-hover:scale-110" />
-                  <span className="sr-only">Acme Inc</span>
-                </Link>
-                <Link
-                  href="#"
-                  className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
-                  prefetch={false}>
-                  <LayoutDashboardIcon className="h-5 w-5" />
-                  Dashboard
-                </Link>
-                <Link
-                  href="#"
-                  className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
-                  prefetch={false}>
-                  <InfoIcon className="h-5 w-5" />
-                  Analytics
-                </Link>
-                <Link
-                  href="#"
-                  className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
-                  prefetch={false}>
-                  <PackageIcon className="h-5 w-5" />
-                  Packages
-                </Link>
-                <Link
-                  href="#"
-                  className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
-                  prefetch={false}>
-                  <KeyIcon className="h-5 w-5" />
-                  API Keys
-                </Link>
+                {
+                  options.map((option, index) => (
+                    <Link
+                      key={index}
+                      href={option.slug}
+                      className={`flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground`}
+                      prefetch={false}>
+                      {option.icon}
+                      {option.name}
+                    </Link>
+                  ))
+                }
                 <Link
                   href="#"
                   className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
