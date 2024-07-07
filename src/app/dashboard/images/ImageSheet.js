@@ -17,7 +17,7 @@ import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 import { deleteImage } from "./actions";
 
-export default function ImageSheet({ image, setImages, images }) {
+export default function ImageSheet({ image }) {
   const handleView = () => {
     console.log("Viewing image", image);
     window.open("/api/images/" + image.uniqueId);
@@ -29,7 +29,6 @@ export default function ImageSheet({ image, setImages, images }) {
     if (confirm) {
       deleteImage({ image }).then((deletedImage) => {
         console.log("Image deleted", deletedImage);
-        setImages(images.filter((img) => img.id !== deletedImage.id));
       });
     }
     return;
