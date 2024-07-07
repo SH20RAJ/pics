@@ -15,15 +15,11 @@ const UploadImage = () => {
     formData.append('path', path);
     formData.append('tags', tags);
 
-    const apiKey = '';
 
     try {
-      const response = await fetch('/api/upload', {
+      const response = await fetch('/api/upload-ui', {
         method: 'POST',
         body: formData,
-        headers: {
-          'Authorization': `Bearer ${apiKey}`
-        },
       });
 
       if (!response.ok) {

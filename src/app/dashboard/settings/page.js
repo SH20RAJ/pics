@@ -1,13 +1,13 @@
-import { auth } from '@/auth'
+'use client'
+import { SettingsPage } from "@/components/settings-page"
 
-export default  async function page() {
-  const session = await auth()
+export default  function page() {
  
   return (
+    <>
     <div>
-      {
-        JSON.stringify(session)
-      }
+      <SettingsPage />
     </div>
+    </>
   )
 }

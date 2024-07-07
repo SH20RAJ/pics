@@ -9,6 +9,7 @@ import { useState } from "react"
 import { generateAPIKey } from "./actions"
 import { useToast } from "@/components/ui/use-toast"
 import { ToastAction } from "@/components/ui/toast"
+import Link from "next/link"
 
 export function GenerateAPI({change}) {
     const [keyName, setKeyName] = useState('')
@@ -50,6 +51,8 @@ export function GenerateAPI({change}) {
               </div>
             </div>
             <Button disabled={!keyName || !description} type="submit" onClick={()=>handleSubmit()}>Generate API Key</Button>
+            {/* Give link to the docs */}
+            <p className="text-sm text-gray-500">Learn how to use your API key <Link href="/docs" className="text-blue-500">here</Link></p>
           </div>
         </section>
     </>

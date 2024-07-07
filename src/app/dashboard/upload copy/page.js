@@ -1,8 +1,9 @@
 'use client'
 import React, { useState } from 'react';
 import axios from 'axios';
-import { Label } from '@/components/ui/label';
+import { Label } from '@radix-ui/react-context-menu';
 import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
 
 const UploadForm = () => {
   const [file, setFile] = useState(null);
@@ -70,7 +71,7 @@ const UploadForm = () => {
             onChange={(e) => setTags(e.target.value)}
           />
         </div>
-        <button type="submit">Upload</button>
+        <Button type="submit">Upload</Button>
       </form>
       {error && <div style={{ color: 'red' }}>{error}</div>}
       {result && (
