@@ -32,8 +32,8 @@ const UploadForm = () => {
         <ToastAction altText="Close">Close</ToastAction>
       ),
     })
-    const handleView = (e) => {
-      window.open("/dashboard/image-details/"+result.uniqueId, "_blank");
+    const handleView = (id) => {
+      window.open("/dashboard/image-details/"+id, "_blank");
     }
 
     e.preventDefault();
@@ -75,7 +75,7 @@ const UploadForm = () => {
         title: "Image Uploaded ",
         description: "Your image has been uploaded successfully - "+response.data.uniqueId,
         action: (
-          <ToastAction altText="View Image" onClick={()=>handleView(e)}>View Image</ToastAction>
+          <ToastAction altText="View Image" onClick={()=>handleView(response.data.uniqueId)}>View Image</ToastAction>
         ),
       })
 

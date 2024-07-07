@@ -2,6 +2,18 @@ import { convertToCloudinaryUrl, convertToImageCDN, uploadFileToDiscord } from "
 import prisma from "@/prisma";
 import { NextResponse } from "next/server";
 
+// CORS headers
+const corsHeaders = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Methods": "GET,POST,OPTIONS",
+  "Access-Control-Allow-Headers": "Content-Type, Authorization",
+};
+
+// OPTIONS handler for the upload route
+export const OPTIONS = () => {
+  return NextResponse.json({}, { headers: corsHeaders });
+};
+
 // POST handler for the upload route
 export const POST = async (req) => {
   const url = new URL(req.url);
@@ -11,7 +23,7 @@ export const POST = async (req) => {
     const formData = await req.formData();
     const file = formData.get("file");
     if (!file) {
-      return NextResponse.json({ error: "File not provided" }, { status: 400 });
+      return NextResponse.json({ error: "File not provided" }, { status: 400, headers: corsHeaders });
     }
 
     let path = formData.get("path") || "./";
@@ -20,12 +32,12 @@ export const POST = async (req) => {
     // Extract the bearer token
     const token = req.headers.get("Authorization");
     if (!token) {
-      return NextResponse.json({ error: "Authorization header missing" }, { status: 401 });
+      return NextResponse.json({ error: "Authorization header missing" }, { status: 401, headers: corsHeaders });
     }
 
     const apiKey = token.split(" ")[1];
     if (!apiKey) {
-      return NextResponse.json({ error: "Bearer token malformed" }, { status: 401 });
+      return NextResponse.json({ error: "Bearer token malformed" }, { status: 401, headers: corsHeaders });
     }
 
     const api = await prisma.apiKey.findUnique({
@@ -43,7 +55,7 @@ export const POST = async (req) => {
 
     // if the api key is not found return an error
     if (!api) {
-      return NextResponse.json({ error: "API Key not found" }, { status: 401 });
+      return NextResponse.json({ error: "API Key not found" }, { status: 401, headers: corsHeaders });
     }
 
     const userId = api.user.id;
@@ -64,12 +76,12 @@ export const POST = async (req) => {
     });
 
     if (!user) {
-      return NextResponse.json({ error: "User not found" }, { status: 401 });
+      return NextResponse.json({ error: "User not found" }, { status: 401, headers: corsHeaders });
     }
 
     // if the user quota is exceeded return an error
     if (user.quota <= user._count.images) {
-      return NextResponse.json({ error: "User quota exceeded" }, { status: 401 });
+      return NextResponse.json({ error: "User quota exceeded" }, { status: 401, headers: corsHeaders });
     }
 
     // Upload the file to Discord
@@ -92,13 +104,13 @@ export const POST = async (req) => {
       },
     });
     data.url = `${"https://pics.shade.cool"}/api/images/${data.uniqueId}`;
-    data.cdn = convertToImageCDN({url:data.url});
+    data.cdn = convertToImageCDN({url: data.url});
 
     // Return the response
-    return NextResponse.json(data);
+    return NextResponse.json(data, { headers: corsHeaders });
   } catch (error) {
     console.error(error);
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ error: error.message }, { status: 500, headers: corsHeaders });
   }
 };
 
@@ -109,5 +121,5 @@ export const GET = async () => {
     body: {
       message: "Hello World! See Docs at https://docs.pics.shade.cool/",
     },
-  });
+  }, { headers: corsHeaders });
 };
