@@ -5,33 +5,32 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Switch } from "@/components/ui/switch";
 import { useEffect, useState } from "react";
+import { useSession } from "next-auth/react";
 
 export function SettingsPage() {
-  const [mode, setMode] = useState(false);
+  const session = useSession();
+  let user = session?.data?.user;
+
+  const [mode, setMode] = useState(localStorage.getItem("darkMode") === "true");
 
   useEffect(() => {
-    // Load mode from localStorage and set initial mode
-    const darkMode = localStorage.getItem("darkMode");
-    if (darkMode) {
-      const isDarkMode = JSON.parse(darkMode);
-      setMode(isDarkMode);
-      if (isDarkMode) {
-        document.documentElement.classList.add("dark");
-      } else {
-        document.documentElement.classList.remove("dark");
-      }
-    }
-  }, []);
+    console.log("modesssss",localStorage.getItem("darkMode"));
 
-  useEffect(() => {
-    // Update localStorage and document class when mode changes
-    localStorage.setItem("darkMode", JSON.stringify(mode));
+    console.log("mode",mode);
+    localStorage.setItem("darkMode",mode);
+    console.log("mode",localStorage.getItem("darkMode"));
+
+
     if (mode) {
       document.documentElement.classList.add("dark");
-    } else {
+    }
+    else {
       document.documentElement.classList.remove("dark");
     }
+
   }, [mode]);
+
+  
 
   return (
     <div className="container max-w-3xl mx-auto py-12 px-4 md:px-0">
@@ -43,17 +42,17 @@ export function SettingsPage() {
             <div className="space-y-4">
               <div>
                 <Label htmlFor="username">Username</Label>
-                <Input id="username" defaultValue="johndoe" />
+                <Input value={user?.username} id="username" placeholder="johndoe" />
               </div>
               <div>
                 <Label htmlFor="email">Email</Label>
-                <Input id="email" type="email" defaultValue="john@example.com" />
+                <Input value={user?.email} id="email" type="email" placeholder="john@example.com" />
               </div>
               <div>
                 <Label>Profile Picture</Label>
                 <div className="flex items-center gap-4">
                   <Avatar className="h-16 w-16">
-                    <AvatarImage src="/placeholder-user.jpg" />
+                    <AvatarImage src={user?.image || "/placeholder-user.jpg"} />
                     <AvatarFallback>JD</AvatarFallback>
                   </Avatar>
                   <Button variant="outline">Upload new image</Button>
@@ -111,7 +110,8 @@ export function SettingsPage() {
                     id="dark-mode"
                   />
                 </div>
-                <Button variant="destructive">Delete Account</Button>
+                <Button disabled={1} variant="destructive">Delete Account</Button>
+                <Button disabled={1} variant="">Update</Button>
               </div>
             </div>
           </div>
