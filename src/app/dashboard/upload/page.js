@@ -25,6 +25,17 @@ const UploadForm = () => {
   };
 
   const handleSubmit = async (e) => {
+    toast({
+      title: "Uploading Image",
+      description: "Your image is being uploaded on the server. Please wait...",
+      action: (
+        <ToastAction altText="Close">Close</ToastAction>
+      ),
+    })
+    const handleView = (e) => {
+      window.open("/dashboard/image-details/"+result.uniqueId, "_blank");
+    }
+
     e.preventDefault();
     setUploading(true);
     
@@ -49,16 +60,26 @@ const UploadForm = () => {
 
       setResult(response.data);
       console.log(result, response.data);
-    //   toast({
-    //     title: "Image Uploaded",
-    //     description: `Your image has been uploaded successfully`,
-    //     action: (
-    //       <>
-    //       <ToastAction altText="Close">Close</ToastAction>
-    //       <ToastAction altText="View Image"><Link href={"/dashboard/image-details/"+result.uniqueId}>View Image</Link></ToastAction>
-    //       </>
-    //     )
-    //   })
+      // toast({
+      //   title: "Image Uploaded",
+      //   description: `Your image has been uploaded successfully`,
+      //   action: (
+      //     <>
+      //     <ToastAction altText="Close">Close</ToastAction>
+      //     <ToastAction altText="View Image"><Link href={"/dashboard/image-details/"+result.uniqueId}>View Image</Link></ToastAction>
+      //     </>
+      //   )
+      // })
+
+      toast({
+        title: "Image Uploaded ",
+        description: "Your image has been uploaded successfully - "+response.data.uniqueId,
+        action: (
+          <ToastAction altText="View Image" onClick={()=>handleView(e)}>View Image</ToastAction>
+        ),
+      })
+
+
       setUploading(false);
       setError(null);
     } catch (err) {
