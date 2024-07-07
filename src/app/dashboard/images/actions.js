@@ -24,3 +24,15 @@ export const getImages = async ({ limit , skip }) => {
     })
     return images
 }
+
+
+export const deleteImage = async ({ image }) => {
+    const session = await auth()
+    const deletedImage = await prisma.image.delete({
+        where : {
+            id : image.id,
+            userId : session.user.userId
+        }
+    })
+    return deletedImage
+}

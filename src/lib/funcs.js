@@ -85,3 +85,10 @@ export const convertToImageCDN = ({url , height, width, format, fit }) => {
   let cdnurl = baseurl + encodeURIComponent(url) + '?height=' + height + '&width=' + width + '&format=' + format + '&fit=' + fit;
   return cdnurl;
 }
+
+
+export const convertCDN = (id) => {
+  const baseurl = "https://imagecdn.app/v1/images/";
+  if (!id) return;
+  return baseurl + encodeURIComponent("https://pics.shade.cool/api/images/"+id);
+}
