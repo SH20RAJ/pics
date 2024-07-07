@@ -17,7 +17,7 @@ import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 import { deleteImage } from "./actions";
 
-export default function ImageSheet({ image , setImages, images}) {
+export default function ImageSheet({ image, setImages, images }) {
   const handleView = () => {
     console.log("Viewing image", image);
     window.open("/api/images/" + image.uniqueId);
@@ -25,16 +25,13 @@ export default function ImageSheet({ image , setImages, images}) {
   };
 
   const handleDelete = () => {
-    //prompt user to confirm deletion or not
-    let confirm = window.confirm("Are you sure you want to delete this image?",image.filename);
+    let confirm = window.confirm("Are you sure you want to delete this image?", image.filename);
     if (confirm) {
-        deleteImage({ image : image }).then((deletedImage) => {
-          console.log("Image deleted", deletedImage);
-          //remove the image from the state
-          setImages(images.filter((img) => img.id !== deletedImage.id));
-        });
+      deleteImage({ image }).then((deletedImage) => {
+        console.log("Image deleted", deletedImage);
+        setImages(images.filter((img) => img.id !== deletedImage.id));
+      });
     }
-
     return;
   };
 
@@ -50,30 +47,22 @@ export default function ImageSheet({ image , setImages, images}) {
             <SheetDescription>
               This image was uploaded on {parseDate(image.createdAt)}
             </SheetDescription>
-          </SheetHeader>{" "}
-          <div className=" mt-4 ">
+          </SheetHeader>
+          <div className="mt-4">
             <img
               alt={image.filename}
-              src={
-                convertCDN(image.uniqueId)
-                // + "?height=20&width=20"
-              }
+              src={convertCDN(image.uniqueId)}
               width={"100%"}
               height={400}
-            />{" "}
+            />
             <div className="mt-4 w-full">
-              <Button className=" w-full m-2" variant="">
-                <EyeIcon
-                  className="cursor-pointer mr-2"
-                  onClick={handleView}
-                />{" "}
+              <Button className="w-full m-2" variant="" onClick={handleView}>
+                <EyeIcon className="mr-2" />
                 View
               </Button>
-              <Button className=" w-full m-2" variant="destructive">
-                <DeleteIcon
-                  className="cursor-pointer mr-1"
-                  onClick={()=>handleDelete()}
-                />{"  "} Delete
+              <Button className="w-full m-2" variant="destructive" onClick={handleDelete}>
+                <DeleteIcon className="mr-1" />
+                Delete
               </Button>
             </div>
           </div>
