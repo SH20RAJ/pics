@@ -1,3 +1,4 @@
+'use client'
 import { useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { Button } from "@/components/ui/button";
@@ -92,7 +93,7 @@ export default function UploadMain() {
           <div className="px-6 py-4 border-b">
             <h2 className="text-2xl font-bold">Image Gallery</h2>
             <p className="text-gray-500">Upload images for Free</p>
-            <p>Login to <Link href={'/dashboard'} className="underline">Dashboard</Link> to use the API to upload images and save your images</p>
+            <p>Login to <Link href={'/dashboard/api-keys'} className="underline">Dashboard</Link> to use the API to upload images and save your images</p>
           </div>
           <div className="p-6">
             <div className="flex items-center justify-between mb-6">

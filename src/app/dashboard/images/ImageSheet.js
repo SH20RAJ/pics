@@ -11,7 +11,7 @@ import {
 import { CopyIcon, DeleteIcon, EyeIcon, CheckIcon } from "lucide-react";
 import { convertCDN, parseDate } from "@/lib/funcs";
 import { Button } from "@/components/ui/button";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { deleteImage } from "./actions";
 
 const actions = [
@@ -40,23 +40,12 @@ const copyToClipboard = async (text, setCopied) => {
   setTimeout(() => setCopied(false), 2000);
 };
 
-const getImageSize = async (url) => {
-  const response = await fetch(url);
-  const blob = await response.blob();
-  return (blob.size / 1024).toFixed(2); // Size in KB
-};
-
 const ImageSheet = ({ image }) => {
-  const [imageSize, setImageSize] = useState(0);
   const [copied, setCopied] = useState({
     url: false,
     imgTag: false,
     markdown: false,
   });
-
-  useEffect(() => {
-    getImageSize(convertCDN(image.uniqueId)).then(setImageSize);
-  }, [image.uniqueId]);
 
   const imageUrl = convertCDN(image.uniqueId);
   const copyActions = [
@@ -101,7 +90,6 @@ const ImageSheet = ({ image }) => {
           <div className="mt-4 w-full ">
             <div className="font-bold text-center text-xl ">Image Details</div>
             <div className="mt-2 text-sm">File Name: {image.filename}</div>
-            <div className="mt-2 text-sm">File Size: {imageSize} KB</div>
             <div className="mt-2 text-sm">
               Created At: {parseDate(image.createdAt)}
             </div>

@@ -3,6 +3,8 @@
 import Link from "next/link";
 import Testomonials from "./explore/testomonials";
 import { auth } from "@/auth";
+import UploadMain from "@/app/upload/UploadMain";
+import { Button } from "./ui/button";
 
 export async function Explore() {
   const session = await auth();
@@ -208,6 +210,16 @@ export async function Explore() {
                 className="mx-auto aspect-video overflow-hidden rounded-xl object-cover object-center sm:w-full lg:order-last"
               />
             </div>
+          </div>
+        </section>
+        {/* section for uploading images demo */}
+        <section className="w-full py-12 md:py-24 lg:py-32">
+          <div className=" flex justify-center">
+            <Link href={"/upload"}><Button>Upload Images</Button></Link>
+
+          </div>
+          <div className="container px-4 md:px-6">
+            <UploadMain />
           </div>
         </section>
         <section id="pricing" className="w-full py-12 md:py-24 lg:py-32">

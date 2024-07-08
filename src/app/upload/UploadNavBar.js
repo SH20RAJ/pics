@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import React from 'react'
 
 export default function UploadNavBar() {
@@ -8,7 +9,7 @@ export default function UploadNavBar() {
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex items-center justify-between py-4">
               <div>
-                <h1 className="text-2xl font-bold">Image Gallery</h1>
+                <Link href={"/"}><h1 className="text-2xl font-bold">Image Gallery</h1></Link>
                 <p className="text-gray-500">Pics Shade : Free and scalable Image Hosting</p>
               </div>
               <div>
