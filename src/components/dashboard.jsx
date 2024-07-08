@@ -26,7 +26,7 @@ import { Input } from "@/components/ui/input"
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuItem } from "@/components/ui/dropdown-menu"
 import UserAvatar from "./UserAvatar"
 import React, { useState } from "react"
-import { ImageIcon, UploadCloud } from "lucide-react"
+import { ImageIcon, UploadCloud, UploadIcon } from "lucide-react"
 
 export function DashboardLayout({ children}) {
 
@@ -37,8 +37,9 @@ const [currentIndex, setCurrentIndex] = useState(0)
     { name: "API Keys", icon: <KeyIcon/> , slug : "/dashboard/api-keys" },
     { name: "Analytics", icon: <InfoIcon/> , slug : "/dashboard/analytics" },
     // { name: "Packages", icon: <PackageIcon/> , slug : "/dashboard/packages" },
-    { name: "Images", icon: <ImageIcon/> , slug : "/dashboard/images" },
-    { name : "Upload" , icon : <UploadCloud/> , slug : "/dashboard/upload" }
+    { name: "Images Log", icon: <ImageIcon/> , slug : "/dashboard/images" },
+    { name : "Upload" , icon : <UploadCloud/> , slug : "/dashboard/upload" },
+    { name : "Upload UI" , icon : <UploadIcon/> , slug : "/dashboard/upload-ui" },
   ];
   return (
     (<div className="flex min-h-screen w-full flex-col bg-muted/40">
