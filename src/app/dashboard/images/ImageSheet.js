@@ -39,18 +39,18 @@ export default function ImageSheet({ image }) {
 
   return (
     <>
-      <Sheet className=" overflow-y-auto">
+      <Sheet>
         <SheetTrigger>
           <Button variant="secondary">View</Button>
         </SheetTrigger>
-        <SheetContent>
+        <SheetContent  className=" overflow-y-auto">
           <SheetHeader>
             <SheetTitle>File Name: {image.filename}</SheetTitle>
             <SheetDescription>
               This image was uploaded on {parseDate(image.createdAt)}
             </SheetDescription>
           </SheetHeader>
-          <div className="mt-4">
+          <div className="mt-4  overflow-y-auto">
             <img
               alt={image.filename}
               src={convertCDN(image.uniqueId)}
@@ -75,8 +75,8 @@ export default function ImageSheet({ image }) {
               <div className="text-sm font-bold">Image Details</div>
               <div className="mt-4">
                 <div className="text-sm">File Name: {image.filename}</div>
-                <div className="text-sm">File Type: {image.mimetype}</div>
-                <div className="text-sm">File Size: {image.size} bytes</div>
+                {/* <div className="text-sm">File Type: {image.mimetype}</div>
+                <div className="text-sm">File Size: {image.size} bytes</div> */}
               </div>
             </div>
             <div className=" mt-4">
