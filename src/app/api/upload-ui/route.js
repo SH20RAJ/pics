@@ -35,6 +35,9 @@ export const POST = async (req) => {
       },
     });
 
+    data.url = `${"https://pics.shade.cool"}/api/images/${data.uniqueId}`;
+    data.cdn = convertToImageCDN({url: data.url});
+    
     // Return the response
     return NextResponse.json(data);
   } catch (error) {

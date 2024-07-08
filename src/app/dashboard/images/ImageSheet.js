@@ -8,134 +8,127 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-
-import { CopyIcon, DeleteIcon, EyeIcon } from "lucide-react";
-
+import { CopyIcon, DeleteIcon, EyeIcon, CheckIcon } from "lucide-react";
 import { convertCDN, parseDate } from "@/lib/funcs";
-import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import { deleteImage } from "./actions";
 
-export default function ImageSheet({ image }) {
-  const handleView = () => {
-    console.log("Viewing image", image);
-    window.open("/api/images/" + image.uniqueId);
-    return;
-  };
+const actions = [
+  {
+    label: "View",
+    icon: EyeIcon,
+    onClick: (image) => window.open("/api/images/" + image.uniqueId),
+  },
+  {
+    label: "Delete",
+    icon: DeleteIcon,
+    variant: "destructive",
+    onClick: (image) => {
+      if (window.confirm("Are you sure you want to delete this image?", image.filename)) {
+        deleteImage({ image }).then((deletedImage) =>
+          console.log("Image deleted", deletedImage)
+        );
+      }
+    },
+  },
+];
 
-  const handleDelete = () => {
-    let confirm = window.confirm(
-      "Are you sure you want to delete this image?",
-      image.filename
-    );
-    if (confirm) {
-      deleteImage({ image }).then((deletedImage) => {
-        console.log("Image deleted", deletedImage);
-      });
-    }
-    return;
-  };
+const copyToClipboard = async (text, setCopied) => {
+  await navigator.clipboard.writeText(text);
+  setCopied(true);
+  setTimeout(() => setCopied(false), 2000);
+};
+
+const getImageSize = async (url) => {
+  const response = await fetch(url);
+  const blob = await response.blob();
+  return (blob.size / 1024).toFixed(2); // Size in KB
+};
+
+const ImageSheet = ({ image }) => {
+  const [imageSize, setImageSize] = useState(0);
+  const [copied, setCopied] = useState({
+    url: false,
+    imgTag: false,
+    markdown: false,
+  });
+
+  useEffect(() => {
+    getImageSize(convertCDN(image.uniqueId)).then(setImageSize);
+  }, [image.uniqueId]);
+
+  const imageUrl = convertCDN(image.uniqueId);
+  const copyActions = [
+    { label: "Image URL", content: imageUrl, key: "url" },
+    { label: "Image Tag", content: `<img src="${imageUrl}" alt="${image.filename}" />`, key: "imgTag" },
+    { label: "Markdown", content: `![alt text](${imageUrl})`, key: "markdown" },
+    { label: "Original", content: `https://pics.shade.cool/api/images/${image.uniqueId}`, key: "original" },
+  ];
 
   return (
-    <>
-      <Sheet>
-        <SheetTrigger>
-          <Button variant="secondary">View</Button>
-        </SheetTrigger>
-        <SheetContent  className=" overflow-y-auto">
-          <SheetHeader>
-            <SheetTitle>File Name: {image.filename}</SheetTitle>
-            <SheetDescription>
-              This image was uploaded on {parseDate(image.createdAt)}
-            </SheetDescription>
-          </SheetHeader>
-          <div className="mt-4  overflow-y-auto">
-            <img
-              alt={image.filename}
-              src={convertCDN(image.uniqueId)}
-              width={"100%"}
-              height={400}
-            />
-            <div className="mt-4 w-full">
-              <Button className="w-full m-2" variant="" onClick={handleView}>
-                <EyeIcon className="mr-2" />
-                View
-              </Button>
+    <Sheet>
+      <SheetTrigger>
+        <Button variant="secondary">View</Button>
+      </SheetTrigger>
+      <SheetContent className="overflow-y-auto p-4">
+        <SheetHeader>
+          <SheetTitle>File Name: {image.filename}</SheetTitle>
+          <SheetDescription>
+            This image was uploaded on {parseDate(image.createdAt)}
+          </SheetDescription>
+        </SheetHeader>
+        <div className="mt-4 flex flex-col items-center overflow-y-auto">
+          <img
+            alt={image.filename}
+            src={imageUrl}
+            className="w-full h-auto max-w-md"
+          />
+          <div className="mt-4 w-full flex flex-col items-center">
+            {actions.map(({ label, icon: Icon, onClick, variant = "" }) => (
               <Button
-                className="w-full m-2"
-                variant="destructive"
-                onClick={handleDelete}
+                key={label}
+                className="w-full m-2 flex items-center justify-center"
+                variant={variant}
+                onClick={() => onClick(image)}
               >
-                <DeleteIcon className="mr-1" />
-                Delete
+                <Icon className="mr-2" />
+                {label}
               </Button>
-            </div>
-            <div className="mt-4">
-              <div className="text-sm font-bold">Image Details</div>
-              <div className="mt-4">
-                <div className="text-sm">File Name: {image.filename}</div>
-                {/* <div className="text-sm">File Type: {image.mimetype}</div>
-                <div className="text-sm">File Size: {image.size} bytes</div> */}
-              </div>
-            </div>
-            <div className=" mt-4">
-              {/* copy imaege url and  image tag */}
-              <div className="text-sm font-bold">Image URL</div>
-              <span className="flex mt-4 overflow-x-auto marker:first-letter:bg-blue-100 no-scrollbar">
-                <div className="text-sm">{convertCDN(image.uniqueId)}</div>
-                {/* Copy URL Button */}
-                <div
-                  className="mr-1 right-0 fixed bg-primary text-white p-1 rounded cursor-pointer"
-                  onClick={() => {
-                    navigator.clipboard.writeText(convertCDN(image.uniqueId));
-                  }}
-                >
-                  <CopyIcon />
-                </div>
-              </span>
-            </div>
-            {/* copy image tag with url and markdown mormat */}
-            <div className=" mt-4">
-              <div className="text-sm font-bold">Image Tag</div>
-              <span className="flex mt-4 overflow-x-auto marker:first-letter:bg-blue-100 no-scrollbar">
-                <div className="text-sm">
-                  {'<img src="'+convertCDN(image.uniqueId)+'" alt="'+image.filename+'" />'}
-                </div>
-                <div
-                  className="mr-1 right-0 fixed bg-primary text-white p-1 rounded cursor-pointer"
-                  onClick={() => {
-                    navigator.clipboard.writeText(
-                      `<img src="${convertCDN(image.uniqueId)}" alt="${image.filename}" />`
-                    );
-                  }}
-                >
-                  <CopyIcon />
-                </div>
-              </span>
-              </div>
-              {/* mardown format  */}
-              <div className=" mt-4">
-              <div className="text-sm font-bold">Markdown</div>
-              <span className="flex mt-4 overflow-x-auto marker:first-letter:bg-blue-100 no-scrollbar">
-                <div className="text-sm">
-                  {'![alt text]('+convertCDN(image.uniqueId)+')'}
-                </div>
-                <div
-                  className="mr-1 right-0 fixed bg-primary text-white p-1 rounded cursor-pointer"
-                  onClick={() => {
-                    navigator.clipboard.writeText(
-                      `![alt text](${convertCDN(image.uniqueId)})`
-                    );
-                  }}
-                >
-                  <CopyIcon />
-                </div>
-              </span>
-              </div>
+            ))}
           </div>
-        </SheetContent>
-      </Sheet>
-    </>
+          <hr />
+          <div className="mt-4 w-full ">
+            <div className="font-bold text-center text-xl ">Image Details</div>
+            <div className="mt-2 text-sm">File Name: {image.filename}</div>
+            <div className="mt-2 text-sm">File Size: {imageSize} KB</div>
+            <div className="mt-2 text-sm">
+              Created At: {parseDate(image.createdAt)}
+            </div>
+          </div>
+          <hr />
+          {copyActions.map(({ label, content, key }) => (
+            <div key={label} className="mt-4 w-full">
+              <div className="text-sm font-bold">{label}</div>
+              <div className="mt-2 flex items-center justify-between p-2 rounded bg-accent">
+                <div className="text-sm break-all">{content}</div>
+                <div
+                  className={`ml-2 p-1 rounded cursor-pointer ${
+                    copied[key] ? "bg-green-500 text-accent-foreground" : "bg-primary"
+                  }`}
+                  onClick={() => copyToClipboard(content, (state) =>
+                    setCopied({ ...copied, [key]: state })
+                  )}
+                >
+                  {copied[key] ? <CheckIcon /> : <CopyIcon />}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </SheetContent>
+    </Sheet>
   );
-}
+};
+
+export default ImageSheet;
