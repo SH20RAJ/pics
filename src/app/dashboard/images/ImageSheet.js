@@ -9,7 +9,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 
-import { DeleteIcon, EyeIcon } from "lucide-react";
+import { CopyIcon, DeleteIcon, EyeIcon } from "lucide-react";
 
 import { convertCDN, parseDate } from "@/lib/funcs";
 import Link from "next/link";
@@ -25,7 +25,10 @@ export default function ImageSheet({ image }) {
   };
 
   const handleDelete = () => {
-    let confirm = window.confirm("Are you sure you want to delete this image?", image.filename);
+    let confirm = window.confirm(
+      "Are you sure you want to delete this image?",
+      image.filename
+    );
     if (confirm) {
       deleteImage({ image }).then((deletedImage) => {
         console.log("Image deleted", deletedImage);
@@ -36,7 +39,7 @@ export default function ImageSheet({ image }) {
 
   return (
     <>
-      <Sheet>
+      <Sheet className=" overflow-y-auto">
         <SheetTrigger>
           <Button variant="secondary">View</Button>
         </SheetTrigger>
@@ -59,11 +62,77 @@ export default function ImageSheet({ image }) {
                 <EyeIcon className="mr-2" />
                 View
               </Button>
-              <Button className="w-full m-2" variant="destructive" onClick={handleDelete}>
+              <Button
+                className="w-full m-2"
+                variant="destructive"
+                onClick={handleDelete}
+              >
                 <DeleteIcon className="mr-1" />
                 Delete
               </Button>
             </div>
+            <div className="mt-4">
+              <div className="text-sm font-bold">Image Details</div>
+              <div className="mt-4">
+                <div className="text-sm">File Name: {image.filename}</div>
+                <div className="text-sm">File Type: {image.mimetype}</div>
+                <div className="text-sm">File Size: {image.size} bytes</div>
+              </div>
+            </div>
+            <div className=" mt-4">
+              {/* copy imaege url and  image tag */}
+              <div className="text-sm font-bold">Image URL</div>
+              <span className="flex mt-4 overflow-x-auto marker:first-letter:bg-blue-100 no-scrollbar">
+                <div className="text-sm">{convertCDN(image.uniqueId)}</div>
+                {/* Copy URL Button */}
+                <div
+                  className="mr-1 right-0 fixed bg-primary text-white p-1 rounded cursor-pointer"
+                  onClick={() => {
+                    navigator.clipboard.writeText(convertCDN(image.uniqueId));
+                  }}
+                >
+                  <CopyIcon />
+                </div>
+              </span>
+            </div>
+            {/* copy image tag with url and markdown mormat */}
+            <div className=" mt-4">
+              <div className="text-sm font-bold">Image Tag</div>
+              <span className="flex mt-4 overflow-x-auto marker:first-letter:bg-blue-100 no-scrollbar">
+                <div className="text-sm">
+                  {'<img src="'+convertCDN(image.uniqueId)+'" alt="'+image.filename+'" />'}
+                </div>
+                <div
+                  className="mr-1 right-0 fixed bg-primary text-white p-1 rounded cursor-pointer"
+                  onClick={() => {
+                    navigator.clipboard.writeText(
+                      `<img src="${convertCDN(image.uniqueId)}" alt="${image.filename}" />`
+                    );
+                  }}
+                >
+                  <CopyIcon />
+                </div>
+              </span>
+              </div>
+              {/* mardown format  */}
+              <div className=" mt-4">
+              <div className="text-sm font-bold">Markdown</div>
+              <span className="flex mt-4 overflow-x-auto marker:first-letter:bg-blue-100 no-scrollbar">
+                <div className="text-sm">
+                  {'![alt text]('+convertCDN(image.uniqueId)+')'}
+                </div>
+                <div
+                  className="mr-1 right-0 fixed bg-primary text-white p-1 rounded cursor-pointer"
+                  onClick={() => {
+                    navigator.clipboard.writeText(
+                      `![alt text](${convertCDN(image.uniqueId)})`
+                    );
+                  }}
+                >
+                  <CopyIcon />
+                </div>
+              </span>
+              </div>
           </div>
         </SheetContent>
       </Sheet>
