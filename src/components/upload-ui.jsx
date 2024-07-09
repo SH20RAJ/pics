@@ -39,6 +39,8 @@ export function UploadUI({setFile, uploading, setPath, setTags, setResult, setEr
               id="tags"
               placeholder="Enter tags separated by commas"
               className="min-h-[100px]"
+              value={tags}
+              onChange={(e) => setTags(e.target.value)}
 
             />
           </div>

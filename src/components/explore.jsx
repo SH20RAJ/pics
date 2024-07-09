@@ -114,7 +114,7 @@ export async function Explore() {
                         Join
                       </Link>
                       <Link
-                        href="/join"
+                        href="/upload"
                         className="inline-flex h-10 items-center justify-center rounded-md border border-input bg-background px-8 text-sm font-medium shadow-sm transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
                         prefetch={true}
                       >
@@ -214,10 +214,6 @@ export async function Explore() {
         </section>
         {/* section for uploading images demo */}
         <section className="w-full py-12 md:py-24 lg:py-32">
-          <div className=" flex justify-center">
-            <Link href={"/upload"}><Button>Upload Images</Button></Link>
-
-          </div>
           <div className="container px-4 md:px-6">
             <UploadMain />
           </div>
