@@ -428,7 +428,7 @@ export const Footer = () => {
       href: "https://docs.pics.shade.cool/links/privacy-policy",
     },
     {
-      title : "Refund Policy",
+      title : "Refund Policy ( No Refund Policy )",
       href : "https://docs.pics.shade.cool/links/refund-policy"
     },
     //https://docs.pics.shade.cool/links/disclaimer
