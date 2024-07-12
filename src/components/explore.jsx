@@ -5,6 +5,7 @@ import Testomonials from "./explore/testomonials";
 import { auth } from "@/auth";
 import UploadMain from "@/app/upload/UploadMain";
 import { Button } from "./ui/button";
+import { CheckIcon, CameraIcon } from "lucide-react";
 
 export async function Explore() {
   const session = await auth();
@@ -393,45 +394,85 @@ export async function Explore() {
           </div>
         </section>
       </main>
+      <Footer/>
     </div>
   );
 }
 
-function CameraIcon(props) {
+export const Footer = () => { 
+  const year = new Date().getFullYear();
+  const links = [
+    {
+      title: "Documentation",
+      href: "/docs",
+    },
+    // {
+    //   title: "Contact",
+    //   href: "/contact",
+    // },
+    // {
+    //   title: "Dashboard",
+    //   href: "/dashboard",
+    // },
+    // {
+    //   title: "Join",
+    //   href: "/join",
+    // },
+    //add tos and privacy policy
+    {
+      title: "Terms of Service",
+      href: "https://docs.pics.shade.cool/links/terms-of-service",
+    },
+    {
+      title: "Privacy Policy",
+      href: "https://docs.pics.shade.cool/links/privacy-policy",
+    },
+    {
+      title : "Refund Policy",
+      href : "https://docs.pics.shade.cool/links/refund-policy"
+    },
+    //https://docs.pics.shade.cool/links/disclaimer
+    {
+      title : "Disclaimer",
+      href : "https://docs.pics.shade.cool/links/disclaimer"
+    }
+  ];
   return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z" />
-      <circle cx="12" cy="13" r="3" />
-    </svg>
-  );
-}
+    <footer className="bg-background text-muted-foreground">
+      <div className="container px-4 md:px-6 py-8">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
+          <div className="space-y-4">
+            <h3 className="text-lg font-bold">Pics Shade</h3>
+            <p className="text-sm">Host your images with Pics Shade.</p>
+          </div>
+          <div className="space-y-4">
+            <h3 className="text-lg font-bold">Links</h3>
+            <ul className="space-y-2">
+              {links.map((link) => (
+                <li key={link.title}>
+                  <Link href={link.href}>{link.title}</Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div className="space-y-4">
+            <h3 className="text-lg font-bold">Contact</h3>
+            <p className="text-sm">
+              Have a question? Contact us at{" "}
+              <a
+                href="mailto:sh20raj@gmail.com"
+                className="text-primary hover:underline"
+              >
+                Mail
+              </a>
+            </p>
+          </div>
+        </div>
+        <div className="border-t border-muted mt-6 pt-6 text-center text-sm">
+          <p>&copy; {year} Pics Shade. All rights reserved.</p>
+        </div>
+      </div>
 
-function CheckIcon(props) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M20 6 9 17l-5-5" />
-    </svg>
-  );
+    </footer>
+  )
 }
