@@ -6,6 +6,7 @@ import { auth } from "@/auth";
 import UploadMain from "@/app/upload/UploadMain";
 import { Button } from "./ui/button";
 import { CheckIcon, CameraIcon } from "lucide-react";
+import Image from "next/image";
 
 export async function Explore() {
   const session = await auth();
@@ -196,17 +197,17 @@ export async function Explore() {
                     <div className="grid gap-1">
                       <h3 className="text-xl font-bold">Advanced Features</h3>
                       <p className="text-muted-foreground">
-                        Integrate with S3 storage(beta), Cloudinary CDN, and get
-                        free image resizing.
+                        Integrate with S3 storage(beta), Cloudinary CDN, get
+                        free image resizing and <Link className=" text-primary" href={"/wp-plugin"}>Wordpress plugin</Link>.
                       </p>
                     </div>
                   </li>
                 </ul>
               </div>
-              <img
-                src="/logo.png"
+              <Image
+                src="/og.png"
                 width="550"
-                height="10"
+                height="510"
                 alt="Features"
                 className="mx-auto aspect-video overflow-hidden rounded-xl object-cover object-center sm:w-full lg:order-last"
               />

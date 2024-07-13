@@ -8,11 +8,23 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata = {
   title: "Pics Shade",
   description: "Welcome to Pics Shade, the ultimate image hosting solution for your website!",
+  image: "/assets/group.svg",
+  url: "https://pics.shade.cool",
+  type: "website",
+  // twitter: "@PicsShade",
+  siteName: "Pics Shade",
+  locale: "en_US",
+  color: "#000000",
+  backgroundColor: "#ffffff",
+  themeColor: "#000000",
+  favicon: "https://docs.pics.shade.cool/~gitbook/icon?size=small&theme=light",
+
 };
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className=" ">
+
       <body className={inter.className}><Theme/>{children}<Toaster/></body>
     </html>
   );
