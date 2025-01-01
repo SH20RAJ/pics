@@ -1,2 +1,0 @@
--- AlterTable
-ALTER TABLE "User" ADD COLUMN     "qouta" INTEGER NOT NULL DEFAULT 10000;

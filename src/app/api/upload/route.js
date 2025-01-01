@@ -1,4 +1,5 @@
 import { convertToCloudinaryUrl, convertToImageCDN, uploadFileToDiscord } from "@/lib/funcs";
+import { ImageUpload } from "@/lib/getImageURL";
 import prisma from "@/prisma";
 import { NextResponse } from "next/server";
 
@@ -86,7 +87,7 @@ export const POST = async (req) => {
 
     // Upload the file to Discord
     const filename = file.name;
-    const imageUrl = convertToCloudinaryUrl(await uploadFileToDiscord(file, `Uploaded with tags: ${tags.join(", ")}`));
+    const imageUrl = await ImageUpload(formData);
 
     // Create response data
     let data = await prisma.image.create({

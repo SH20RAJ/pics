@@ -12,7 +12,7 @@ export default function UploadMain() {
   const [images, setImages] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [uploadProgress, setUploadProgress] = useState({});
-  const apiKey = process.env.NEXT_PUBLIC_PICS_SHADE_API_KEY;
+  const apiKey = "w1da9wa0x8jml7gx0mais";
   const { toast } = useToast();
 
   const onDrop = async (acceptedFiles) => {
@@ -38,7 +38,7 @@ export default function UploadMain() {
           const formData = new FormData();
           formData.append('file', file);
 
-          const response = await fetch('https://pics.shade.cool/api/upload', {
+          const response = await fetch('/api/upload', {
             method: 'POST',
             headers: {
               'Authorization': `Bearer ${apiKey}`

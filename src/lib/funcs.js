@@ -8,15 +8,15 @@ function convertURLDC(url) {
 }
 
 export function convertToCloudinaryUrl(discordUrl) {
-  const [baseUrl, queryString] = discordUrl.split("?");
+  // const [baseUrl, queryString] = discordUrl.split("?");
 
-  const encodedUrl = encodeURIComponent(discordUrl);
+  // const encodedUrl = encodeURIComponent(discordUrl);
 
-  const cloudinaryBaseUrl =
-    "https://res.cloudinary.com/practicaldev/image/fetch/";
-  const cloudinaryUrl = `${cloudinaryBaseUrl}${encodedUrl}`;
+  // const cloudinaryBaseUrl =
+  //   "https://res.cloudinary.com/practicaldev/image/fetch/";
+  // const cloudinaryUrl = `${cloudinaryBaseUrl}${encodedUrl}`;
 
-  return cloudinaryUrl;
+  return discordUrl;
 }
 
 export async function uploadFileToDiscord(
@@ -78,17 +78,17 @@ export const truncate = (str, n) => {
   return str.length > n ? str.substr(0, n - 1) + "..." : str;
 };
 
-export const convertToImageCDN = ({url , height, width, format, fit }) => {
-  const baseurl = 'https://imagecdn.app/v1/images/';
-  if(!url) return;
-  if(!height && !width && !format && !fit) return baseurl + encodeURIComponent(url);
-  let cdnurl = baseurl + encodeURIComponent(url) + '?height=' + height + '&width=' + width + '&format=' + format + '&fit=' + fit;
-  return cdnurl;
-}
-
+export const convertToImageCDN = ({ url, height, width, format, fit }) => {
+  // const baseurl = 'https://imagecdn.app/v1/images/';
+  // if(!url) return;
+  // if(!height && !width && !format && !fit) return baseurl + encodeURIComponent(url);
+  // let cdnurl = baseurl + encodeURIComponent(url) + '?height=' + height + '&width=' + width + '&format=' + format + '&fit=' + fit;
+  return url;
+};
 
 export const convertCDN = (id) => {
-  const baseurl = "https://imagecdn.app/v1/images/";
-  if (!id) return;
-  return baseurl + encodeURIComponent("https://pics.shade.cool/api/images/"+id);
-}
+  // const baseurl = "https://imagecdn.app/v1/images/";
+  // if (!id) return;
+  // return baseurl + encodeURIComponent("https://pics.shade.cool/api/images/"+id);
+  return "https://pics.shade.cool/api/images/" + id;
+};

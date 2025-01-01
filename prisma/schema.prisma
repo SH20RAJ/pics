@@ -3,12 +3,13 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mysql"
   url      = env("DATABASE_URL")
 }
 
 model User {
-  id             String           @id @default(cuid())
+  uid            String           @default(cuid())
+  id             Int              @id @default(autoincrement())
   name           String?
   email          String           @unique
   username       String           @unique @default(cuid())
@@ -32,7 +33,7 @@ model ApiKey {
   key         String   @unique @default(uuid())
   name        String   @default("Untitled API Key")
   description String?
-  userId      String
+  userId      Int
   user        User     @relation(fields: [userId], references: [id])
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
@@ -44,7 +45,7 @@ model Image {
   filename  String?
   url       String
   path      String
-  userId    String
+  userId    Int
   tagdata   String?
   user      User       @relation(fields: [userId], references: [id])
   folderId  Int?
@@ -78,7 +79,7 @@ model ImageTag {
 model Folder {
   id        Int      @id @default(autoincrement())
   name      String
-  userId    String
+  userId    Int
   user      User     @relation(fields: [userId], references: [id])
   parentId  Int?
   parent    Folder?  @relation("SubFolders", fields: [parentId], references: [id])
@@ -92,7 +93,7 @@ model Folder {
 
 model UserImageQuota {
   id         Int      @id @default(autoincrement())
-  userId     String
+  userId     Int
   user       User     @relation(fields: [userId], references: [id])
   imageCount Int      @default(0)
   quota      Int      @default(10000) // Default free quota is 10,000 images
@@ -101,7 +102,7 @@ model UserImageQuota {
 }
 
 model Account {
-  userId            String
+  userId            Int
   type              String
   provider          String
   providerAccountId String
@@ -121,7 +122,7 @@ model Account {
 
 model Session {
   sessionToken String   @unique
-  userId       String
+  userId       Int
   expires      DateTime
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   createdAt    DateTime @default(now())
@@ -138,7 +139,7 @@ model VerificationToken {
 
 model Authenticator {
   credentialID         String  @unique
-  userId               String
+  userId               Int
   providerAccountId    String
   credentialPublicKey  String
   counter              Int

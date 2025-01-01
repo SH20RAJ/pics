@@ -16,9 +16,11 @@ export const metadata = {
   locale: "en_US",
   color: "#000000",
   backgroundColor: "#ffffff",
-  themeColor: "#000000",
   favicon: "https://docs.pics.shade.cool/~gitbook/icon?size=small&theme=light",
+};
 
+export const viewport = {
+  themeColor: "#000000",
 };
 
 export default function RootLayout({ children }) {
