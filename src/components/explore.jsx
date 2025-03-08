@@ -160,7 +160,7 @@ export async function Explore() {
                       <h3 className="text-xl font-bold">Freemium Model</h3>
                       <p className="text-muted-foreground">
                         Get started for free with up to 10,000 images. Pay just
-                        $10 for uploading 10,000 more images.
+                        ₹871.49 for uploading 10,000 more images.
                       </p>
                     </div>
                   </li>
@@ -240,7 +240,7 @@ export async function Explore() {
               <div className="flex flex-col justify-between rounded-lg border bg-background p-6 shadow-sm">
                 <div className="space-y-4 mb-4">
                   <h3 className="text-2xl font-bold">Free</h3>
-                  <p className="text-4xl font-bold">$0</p>
+                  <p className="text-4xl font-bold">₹0                  </p>
                   <p className="text-muted-foreground">per month</p>
                   <ul className="space-y-2 text-muted-foreground">
                     <li>
@@ -276,9 +276,9 @@ export async function Explore() {
               <div className="flex flex-col justify-between rounded-lg border bg-background p-6 shadow-sm">
                 <div className="space-y-4 mb-4">
                   <h3 className="text-2xl font-bold">Pro</h3>
-                  <p className="text-4xl font-bold">$10</p>
+                  <p className="text-4xl font-bold">₹871.49</p>
                   <p className="text-muted-foreground">
-                    $10 / 10K additional images
+                    ₹871.49 / 10K additional images
                   </p>
                   <ul className="space-y-2 text-muted-foreground">
                     <li>
@@ -395,12 +395,12 @@ export async function Explore() {
           </div>
         </section>
       </main>
-      <Footer/>
+      <Footer />
     </div>
   );
 }
 
-export const Footer = () => { 
+export const Footer = () => {
   const year = new Date().getFullYear();
   const links = [
     {
@@ -429,13 +429,13 @@ export const Footer = () => {
       href: "https://docs.pics.shade.cool/links/privacy-policy",
     },
     {
-      title : "Refund Policy ( No Refund Policy )",
-      href : "https://docs.pics.shade.cool/links/refund-policy"
+      title: "Refund Policy ( No Refund Policy )",
+      href: "https://docs.pics.shade.cool/links/refund-policy"
     },
     //https://docs.pics.shade.cool/links/disclaimer
     {
-      title : "Disclaimer",
-      href : "https://docs.pics.shade.cool/links/disclaimer"
+      title: "Disclaimer",
+      href: "https://docs.pics.shade.cool/links/disclaimer"
     }
   ];
   return (
